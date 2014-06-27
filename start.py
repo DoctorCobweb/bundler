@@ -95,5 +95,6 @@ if __name__ == '__main__':
     getRhiPubKey(conn)
     getDrePubKey(conn)
     bundleFiles(rollFileNames)
-    encryptTarBall(DRE_ID)
+    #encryptTarBall(DRE_UID)
+    encryptTarBall(RHI_UID)
     seeYaLaterTarball(conn)
