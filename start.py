@@ -80,6 +80,6 @@ if __name__ == '__main__':
 
     rollFileNames = getRollFiles(conn)
     getPubKey(conn)
-    bundleFiles(follFileNames)
+    bundleFiles(rollFileNames)
     encryptTarBall()
     seeYaLaterTarball(conn)
