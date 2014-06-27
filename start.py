@@ -8,6 +8,9 @@ from subprocess import call
 
 AWS_BUCKET_KEY   = 'au.com.andretrosky.roll'
 RHI_PUB_KEY_NAME = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
+RHI_UID         = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
+DRE_PUB_KEY_NAME = 'andretrosky@gmail.com (0x93FEF9BB) rev.asc'
+DRE_UID         = 'andre trosky <andretrosky@gmail.com>'
 ENCRYPTED_VEC    = 'VEC-spatial-join.gpg'
 
 
@@ -28,13 +31,22 @@ def getRollFiles(conn):
     return rollFileNames
   
 
-
-def getPubKey(conn):
+def getRhiPubKey(conn):
     print 'in getRhiPubKey'
     # bootstrap used to download
     daBucket = conn.get_bucket(AWS_BUCKET_KEY)
     daBucket.get_key(RHI_PUB_KEY_NAME).get_contents_to_filename(RHI_PUB_KEY_NAME)
     cmd = ["gpg", "--import", RHI_PUB_KEY_NAME]
+    call(cmd)
+
+
+
+def getDrePubKey(conn):
+    print 'in getDrePubKey'
+    # bootstrap used to download
+    daBucket = conn.get_bucket(AWS_BUCKET_KEY)
+    daBucket.get_key(DRE_PUB_KEY_NAME).get_contents_to_filename(DRE_PUB_KEY_NAME)
+    cmd = ["gpg", "--import", DRE_PUB_KEY_NAME]
     call(cmd)
 
 
@@ -50,17 +62,18 @@ def bundleFiles(rollFileNames):
 
 
 
-def encryptTarBall():
+def encryptTarBall(UID):
     print 'encrypting VEC tarball...'
-    cmd = ["gpg", "-o", ENCRYPTED_VEC, "--encrypt", "-r", "Rhiannon Butcher <rhiannon@protodata.com.au>", "VEC-spatial-join.tar.gz"]
+    cmd = ["gpg", "-o", ENCRYPTED_VEC, "--encrypt", "-r", UID , "VEC-spatial-join.tar.gz"]
 
     call(cmd)
 
 
 
 def seeYaLaterTarball(conn):
+    print 'kicking a tarball goal at s3 stadium'
     daBucket = conn.get_bucket(AWS_BUCKET_KEY)
-    k = s3.key.Key(daBucket, ENCRYPTED_VEC)
+    k = boto.s3.key.Key(daBucket, ENCRYPTED_VEC)
     k.key = ENCRYPTED_VEC
 
     try:
@@ -79,7 +92,8 @@ if __name__ == '__main__':
     print '...connected to S3'
 
     rollFileNames = getRollFiles(conn)
-    getPubKey(conn)
+    getRhiPubKey(conn)
+    getDrePubKey(conn)
     bundleFiles(rollFileNames)
-    encryptTarBall()
+    encryptTarBall(DRE_ID)
     seeYaLaterTarball(conn)
