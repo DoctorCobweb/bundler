@@ -9,7 +9,7 @@ from subprocess import call
 AWS_BUCKET_KEY   = 'au.com.andretrosky.roll'
 RHI_PUB_KEY_NAME = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
 RHI_UID         = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
-DRE_PUB_KEY_NAME = 'andretrosky@gmail.com (0x93FEF9BB) rev.asc'
+DRE_PUB_KEY_NAME = '0x93FEF9BB.asc'
 DRE_UID         = 'andre trosky <andretrosky@gmail.com>'
 ENCRYPTED_VEC    = 'VEC-spatial-join.gpg'
 
