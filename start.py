@@ -11,6 +11,7 @@ RHI_PUB_KEY_NAME = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
 RHI_UID          = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
 DRE_PUB_KEY_NAME = '0x93FEF9BB.asc'
 DRE_UID          = 'andre trosky <andretrosky@gmail.com>'
+TARBALL_FILENAME = 'VEC-spatial-join-and-targets.tar.gz'
 ENCRYPTED_VEC    = 'VEC-spatial-join-and-targets.gpg'
 
 
@@ -54,7 +55,7 @@ def getDrePubKey(conn):
 def bundleFiles(rollFileNames):
     print 'in bundleFiles'
 
-    cmd = ["tar", "czf", "VEC-spatial-join.tar.gz"]
+    cmd = ["tar", "czf", TARBALL_FILENAME]
     for f in rollFileNames:
         cmd.append(f)
     
@@ -64,7 +65,7 @@ def bundleFiles(rollFileNames):
 
 def encryptTarBall(UID):
     print 'encrypting VEC tarball...'
-    cmd = ["gpg", "-o", ENCRYPTED_VEC, "--encrypt", "-r", UID , "VEC-spatial-join.tar.gz"]
+    cmd = ["gpg", "-o", ENCRYPTED_VEC, "--encrypt", "-r", UID , TARBALL_FILENAME]
 
     call(cmd)
 
