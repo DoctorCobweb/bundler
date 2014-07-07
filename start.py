@@ -27,11 +27,11 @@ def getRollFiles(conn):
     rollFileNames = []
 
     for yar in daBucket.list():
-        if yar.name.startswith('results1/') and yar.name.endswith('.csv'):
+        if yar.name.startswith('results_full/') and yar.name.endswith('.csv'):
             pprint.pprint(yar.name)
-            #strip out results1/ prefix for filename to save to
-            daBucket.get_key(yar.name).get_contents_to_filename(yar.name[9:])
-            rollFileNames.append(yar.name[9:])
+            #strip out results_full/ prefix for filename to save to
+            daBucket.get_key(yar.name).get_contents_to_filename(yar.name[13:])
+            rollFileNames.append(yar.name[13:])
 
     assert len(rollFileNames) > 0, 'ASSERT ERROR: rollFileNames is len 0'
 
