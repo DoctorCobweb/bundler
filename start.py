@@ -13,7 +13,7 @@ from subprocess import call
 AWS_BUCKET_KEY     = 'au.com.andretrosky.roll'
 RHI_PUB_KEY_NAME   = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
 RHI_UID            = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
-DRE_PUB_KEY_NAME   = '0x93FEF9BB.asc'
+DRE_PUB_KEY_NAME   = '5C63F92B.asc'
 DRE_UID            = 'andre trosky <andretrosky@gmail.com>'
 ROBIN_PUB_KEY_NAME = '95C40075.asc'
 ROBIN_UID          = 'Robin de Garis <support@vic.greens.org.au>'
@@ -74,7 +74,7 @@ def getDrePubKey(conn):
         exit(1)
 
 
-def getRobinePubKey(conn):
+def getRobinPubKey(conn):
     print 'in getRobinPubKey'
     # bootstrap used to download
     daBucket = conn.get_bucket(AWS_BUCKET_KEY)
@@ -144,6 +144,7 @@ if __name__ == '__main__':
     rollFileNames = getRollFiles(conn)
     getRhiPubKey(conn)
     getDrePubKey(conn)
+    getRobinPubKey(conn)
     bundleFiles(rollFileNames)
     #encryptTarBall(DRE_UID)
     #encryptTarBall(RHI_UID)
