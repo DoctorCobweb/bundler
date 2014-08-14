@@ -10,13 +10,15 @@ from subprocess import call
 
 
 
-AWS_BUCKET_KEY   = 'au.com.andretrosky.roll'
-RHI_PUB_KEY_NAME = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
-RHI_UID          = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
-DRE_PUB_KEY_NAME = '0x93FEF9BB.asc'
-DRE_UID          = 'andre trosky <andretrosky@gmail.com>'
-TARBALL_FILENAME = 'VEC-spatial-join-and-targets.tar.gz'
-ENCRYPTED_VEC    = 'VEC-spatial-join-and-targets.gpg'
+AWS_BUCKET_KEY     = 'au.com.andretrosky.roll'
+RHI_PUB_KEY_NAME   = '73487FA275BBE4142E3DCFD53C95E1C17B86447D.asc'
+RHI_UID            = 'Rhiannon Butcher <rhiannon@protodata.com.au>'
+DRE_PUB_KEY_NAME   = '0x93FEF9BB.asc'
+DRE_UID            = 'andre trosky <andretrosky@gmail.com>'
+ROBIN_PUB_KEY_NAME = '95C40075.asc'
+ROBIN_UID          = 'Robin de Garis <support@vic.greens.org.au>'
+TARBALL_FILENAME   = 'VEC-spatial-join-and-targets.tar.gz'
+ENCRYPTED_VEC      = 'VEC-spatial-join-and-targets.gpg'
 
 
 def getRollFiles(conn):
@@ -55,7 +57,6 @@ def getRhiPubKey(conn):
         exit(1)
 
 
-
 def getDrePubKey(conn):
     print 'in getDrePubKey'
     # bootstrap used to download
@@ -65,6 +66,23 @@ def getDrePubKey(conn):
     assert os.path.exists(DRE_PUB_KEY_NAME) == True, 'ASSERT ERROR: dre pub key not exist'
 
     cmd = ["gpg", "--import", DRE_PUB_KEY_NAME]
+
+    try:
+        call(cmd)
+    except:
+        print 'ERROR:getDrePubKey subprocess error'
+        exit(1)
+
+
+def getRobinePubKey(conn):
+    print 'in getRobinPubKey'
+    # bootstrap used to download
+    daBucket = conn.get_bucket(AWS_BUCKET_KEY)
+    daBucket.get_key(ROBIN_PUB_KEY_NAME).get_contents_to_filename(ROBIN_PUB_KEY_NAME)
+
+    assert os.path.exists(ROBIN_PUB_KEY_NAME) == True, 'ASSERT ERROR: robin pub key not exist'
+
+    cmd = ["gpg", "--import", ROBIN_PUB_KEY_NAME]
 
     try:
         call(cmd)
@@ -127,6 +145,7 @@ if __name__ == '__main__':
     getRhiPubKey(conn)
     getDrePubKey(conn)
     bundleFiles(rollFileNames)
-    encryptTarBall(DRE_UID)
+    #encryptTarBall(DRE_UID)
     #encryptTarBall(RHI_UID)
+    encryptTarBall(ROBIN_UID)
     seeYaLaterTarball(conn)
